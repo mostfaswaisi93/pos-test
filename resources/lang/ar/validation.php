@@ -148,9 +148,9 @@ return [
     'attributes' => [
         'name'                  => 'الاسم',
         'username'              => 'اسم المُستخدم',
-        'email'                 => 'البريد الالكتروني',
+        'email'                 => 'البريد الإلكتروني',
         'first_name'            => 'الاسم الأول',
-        'last_name'             => 'اسم العائلة',
+        'last_name'             => 'الاسم الأخير',
         'password'              => 'كلمة المرور',
         'password_confirmation' => 'تأكيد كلمة المرور',
         'city'                  => 'المدينة',
@@ -175,5 +175,7 @@ return [
         'time'                  => 'الوقت',
         'available'             => 'مُتاح',
         'size'                  => 'الحجم',
+        'image'                 => 'صورة',
+        'permissions'           => 'الصلاحيات',
     ],
 ];

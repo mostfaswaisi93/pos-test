@@ -1,12 +1,13 @@
 <?php
 
 Route::group(
-    [
-        'prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
-    ],
+    ['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],
     function () {
-        Route::group(['prefix' => 'dashboard'], function () {
-            Route::get('/index', 'DashboardController@index')->name('dashboard.index');
+        Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+            Route::get('/index', 'DashboardController@index')->name('index');
+
+            //users
+            Route::resource('users', 'UserController')->except(['show']);
         });
     }
 );

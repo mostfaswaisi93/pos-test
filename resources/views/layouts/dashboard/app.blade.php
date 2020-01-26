@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Blank Page</title>
+    <title>Point of sale (POS)</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     {{--<!-- Bootstrap 3.3.7 -->--}}
@@ -32,7 +32,7 @@
     </style>
     @else
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        href="https://fonts.googleapis.com/css?family=SourceSansPro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" href="{{ asset('dashboard/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/css/AdminLTE.min.css') }}">
     @endif
@@ -171,7 +171,8 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{ asset('dashboard/img/user2-160x160.jpg') }}" class="user-image"
                                     alt="User Image">
-                                <span class="hidden-xs">Ahmed Hassan</span>
+                                <span class="hidden-xs">{{ auth()->user()->first_name }}
+                                    {{ auth()->user()->last_name }}</span>
                             </a>
                             <ul class="dropdown-menu">
 
@@ -181,7 +182,7 @@
                                         alt="User Image">
 
                                     <p>
-                                        Ahmed Hassan
+                                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                                         <small>Member since 2 days</small>
                                     </p>
                                 </li>
@@ -216,11 +217,8 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Version</b> 2.4.0
             </div>
-            <strong>Copyright &copy; 2014-2016
-                <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-            reserved.
+            All rights reserved.
         </footer>
 
     </div><!-- end of wrapper -->
@@ -248,6 +246,7 @@
             radioClass: 'iradio_minimal-blue'
         });
 
+    //delete
         $('.delete').click(function (e) {
 
             var that = $(this)
@@ -272,6 +271,22 @@
             n.show();
 
         });//end of delete
+
+                // image preview
+        $(".image").change(function () {
+
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.image-preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+
+        });
+
 
     })
 
