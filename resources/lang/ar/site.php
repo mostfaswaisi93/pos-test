@@ -25,10 +25,14 @@ return [
     'deleted_successfully'      => 'تم حذف البيانات بنجاح',
 
     'no_data_found'             => 'للأسف لا يوجد أي سجلات',
+    'no_records'                => 'للأسف لا يوجد أي سجلات',
 
     'clients'                   => 'العملاء',
     'phone'                     => 'التلفون',
     'address'                   => 'العنوان',
+
+    'orders'                    => 'الطلبات',
+    'add_order'                 => 'أضف طلب',
 
     'users'                     => 'المشرفين',
     'first_name'                => 'الاسم الأول',
@@ -47,11 +51,14 @@ return [
     'category'                  => 'القسم',
 
     'products'                  => 'المنتجات',
+    'product'                   => 'المنتج',
+    'quantity'                  => 'الكمية',
+    'total'                     => 'المجموع',
     'purchase_price'            => 'سعر الشراء',
+    'price'                     => 'السعر',
     'sale_price'                => 'سعر البيع',
     'stock'                     => 'المخزن',
     'profit_percent'            => 'المكسب',
-
 
     'ar'                        => [
         'name' => 'الاسم باللغة العربية',
