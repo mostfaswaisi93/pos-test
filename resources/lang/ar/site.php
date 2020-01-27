@@ -35,12 +35,27 @@ return [
 
     'permissions'               => 'الصلاحيات',
     'categories'                => 'الأقسام',
+    'all_categories'            => 'كل الأقسام',
     'name'                      => 'الاسم',
+    'description'               => 'الوصف',
+    'products_count'            => 'عدد المنتجات',
+    'related_products'          => 'المنتجات المرتبطة',
+    'category'                  => 'القسم',
+
+    'products'                  => 'المنتجات',
+    'purchase_price'            => 'سعر الشراء',
+    'sale_price'                => 'سعر البيع',
+    'stock'                     => 'المخزن',
+    'profit_percent'            => 'المكسب',
+
+
     'ar'                        => [
-        'name' => 'الاسم باللغة العربية'
+        'name' => 'الاسم باللغة العربية',
+        'description' => 'الوصف باللغة العربية',
     ],
     'en'                        => [
-        'name' => 'الاسم باللغة الإنجليزية'
+        'name' => 'الاسم باللغة الإنجليزية',
+        'description' => 'الوصف باللغة الإنجليزية',
     ],
 
 ];
