@@ -81,6 +81,9 @@
     <link rel="stylesheet" href="{{ asset('dashboard_files/plugins/noty/noty.css') }}">
     <script src="{{ asset('dashboard_files/plugins/noty/noty.min.js') }}"></script>
 
+    {{--morris--}}
+    <link rel="stylesheet" href="{{ asset('dashboard_files/plugins/morris/morris.css') }}">
+
     {{--<!-- iCheck -->--}}
     <link rel="stylesheet" href="{{ asset('dashboard_files/plugins/icheck/all.css') }}">
 
@@ -276,6 +279,10 @@
     {{--print this--}}
     <script src="{{ asset('dashboard_files/js/printThis.js') }}"></script>
 
+    {{--morris --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="{{ asset('dashboard_files/plugins/morris/morris.min.js') }}"></script>
+
     {{--custom js--}}
     <script src="{{ asset('dashboard_files/js/custom/image_preview.js') }}"></script>
     <script src="{{ asset('dashboard_files/js/custom/order.js') }}"></script>
@@ -336,6 +343,8 @@
     });
 
     </script>
+    @stack('scripts')
+
 </body>
 
 </html>
