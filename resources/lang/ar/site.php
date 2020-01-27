@@ -2,6 +2,7 @@
 
 return [
     'dashboard'                 => 'الرئيسية',
+    'logout'                    => 'تسجيل الخروج',
 
     'add'                       => 'أضف',
     'create'                    => 'إضافة',
@@ -10,6 +11,9 @@ return [
     'update'                    => 'تعديل',
     'delete'                    => 'حذف',
     'search'                    => 'بحث',
+    'show'                      => 'عرض',
+    'loading'                   => 'جاري التحميل',
+    'print'                     => 'طباعة',
 
     'confirm_delete'            => 'تأكيد الحذف',
     'yes'                       => 'نعم',
@@ -28,11 +32,14 @@ return [
     'no_records'                => 'للأسف لا يوجد أي سجلات',
 
     'clients'                   => 'العملاء',
+    'client_name'               => 'اسم العميل',
     'phone'                     => 'التلفون',
     'address'                   => 'العنوان',
+    'previous_orders'           => 'الطلبات السابقة',
 
     'orders'                    => 'الطلبات',
     'add_order'                 => 'أضف طلب',
+    'edit_order'                => 'تعديل طلب',
 
     'users'                     => 'المشرفين',
     'first_name'                => 'الاسم الأول',
@@ -49,6 +56,8 @@ return [
     'products_count'            => 'عدد المنتجات',
     'related_products'          => 'المنتجات المرتبطة',
     'category'                  => 'القسم',
+    'show_products'             => 'عرض المنتجات',
+    'created_at'                => 'تم إضافته',
 
     'products'                  => 'المنتجات',
     'product'                   => 'المنتج',

@@ -130,7 +130,7 @@
         setTimeout(function() {
 
             // Add doctype to fix the style difference between printing and render
-            function setDocType($iframe, doctype){
+            function setDocType($iframe, doctype) {
                 var win, doc;
                 win = $iframe.get(0);
                 win = win.contentWindow || win.contentDocument || win;
@@ -140,7 +140,7 @@
                 doc.close();
             }
 
-            if (opt.doctypeString){
+            if (opt.doctypeString) {
                 setDocType($iframe, opt.doctypeString);
             }
 
@@ -216,7 +216,7 @@
                 // add canvas data-ids for easy access after cloning.
                 var canvasId = 0;
                 // .addBack('canvas') adds the top-level element if it is a canvas.
-                $element.find('canvas').addBack('canvas').each(function(){
+                $element.find('canvas').addBack('canvas').each(function() {
                     $(this).attr('data-printthis', canvasId++);
                 });
             }
@@ -225,7 +225,7 @@
 
             if (opt.canvas) {
                 // Re-draw new canvases by referencing the originals
-                $body.find('canvas').each(function(){
+                $body.find('canvas').each(function() {
                     var cid = $(this).data('printthis'),
                         $src = $('[data-printthis="' + cid + '"]');
 
@@ -265,7 +265,7 @@
                 if (typeof beforePrintHandler === "function") {
                     if ('matchMedia' in win) {
                         win.matchMedia('print').addListener(function(mql) {
-                            if(mql.matches)  beforePrintHandler();
+                            if (mql.matches) beforePrintHandler();
                         });
                     } else {
                         win.onbeforeprint = beforePrintHandler;
@@ -311,25 +311,25 @@
 
     // defaults
     $.fn.printThis.defaults = {
-        debug: false,               // show the iframe for debugging
-        importCSS: true,            // import parent page css
-        importStyle: false,         // import style tags
-        printContainer: true,       // print outer container/$.selector
-        loadCSS: "",                // path to additional css file - use an array [] for multiple
-        pageTitle: "",              // add title to print page
-        removeInline: false,        // remove inline styles from print elements
-        removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
-        printDelay: 333,            // variable print delay
-        header: null,               // prefix to html
-        footer: null,               // postfix to html
-        base: false,                // preserve the BASE tag or accept a string for the URL
-        formValues: true,           // preserve input/form values
-        canvas: false,              // copy canvas content
+        debug: false, // show the iframe for debugging
+        importCSS: true, // import parent page css
+        importStyle: false, // import style tags
+        printContainer: true, // print outer container/$.selector
+        loadCSS: "", // path to additional css file - use an array [] for multiple
+        pageTitle: "", // add title to print page
+        removeInline: false, // remove inline styles from print elements
+        removeInlineSelector: "*", // custom selectors to filter inline styles. removeInline must be true
+        printDelay: 333, // variable print delay
+        header: null, // prefix to html
+        footer: null, // postfix to html
+        base: false, // preserve the BASE tag or accept a string for the URL
+        formValues: true, // preserve input/form values
+        canvas: false, // copy canvas content
         doctypeString: '<!DOCTYPE html>', // enter a different doctype for older markup
-        removeScripts: false,       // remove script tags from print content
-        copyTagClasses: false,      // copy classes from the html & body tag
-        beforePrintEvent: null,     // callback function for printEvent in iframe
-        beforePrint: null,          // function called before iframe is filled
-        afterPrint: null            // function called before iframe is removed
+        removeScripts: false, // remove script tags from print content
+        copyTagClasses: false, // copy classes from the html & body tag
+        beforePrintEvent: null, // callback function for printEvent in iframe
+        beforePrint: null, // function called before iframe is filled
+        afterPrint: null // function called before iframe is removed
     };
 })(jQuery);
