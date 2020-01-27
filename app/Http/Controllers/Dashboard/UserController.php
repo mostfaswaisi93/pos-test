@@ -21,10 +21,13 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::whereRoleIs('admin')->when($request->search, function ($query) use ($request) {
+        $users = User::whereRoleIs('admin')->where(function ($q) use ($request) {
 
-            return $query->where('first_name', 'like', '%' . $request->search . '%')
-                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+            return $q->when($request->search, function ($query) use ($request) {
+
+                return $query->where('first_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
+            });
         })->latest()->paginate(5);
 
         return view('dashboard.users.index')->with('users', $users);
@@ -118,5 +121,3 @@ class UserController extends Controller
         return redirect()->route('dashboard.users.index');
     }
 }
-
-// Add Admins CRUDs and Images - Roles
