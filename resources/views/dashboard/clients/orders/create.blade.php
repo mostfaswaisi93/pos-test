@@ -9,7 +9,7 @@
         <h1>@lang('site.add_order')</h1>
 
         <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a>
+            <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a>
             </li>
             <li><a href="{{ route('dashboard.clients.index') }}">@lang('site.clients')</a></li>
             <li class="active">@lang('site.add_order')</li>
@@ -134,7 +134,8 @@
 
                             <h4>@lang('site.total') : <span class="total-price">0</span></h4>
 
-                            <button class="btn btn-primary btn-block disabled" id="form-btn"><i class="fa fa-plus"></i>
+                            <button class="btn btn-primary btn-block disabled" id="add-order-form-btn"><i
+                                    class="fa fa-plus"></i>
                                 @lang('site.add_order')</button>
 
                         </form>

@@ -4,7 +4,7 @@ Route::group(
     ['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],
     function () {
         Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
-            Route::get('/index', 'DashboardController@index')->name('index');
+            Route::get('/', 'WelcomeController@index')->name('welcome');
 
             Route::resource('categories', 'CategoryController')->except(['show']);
             Route::resource('products', 'ProductController')->except(['show']);
