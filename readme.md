@@ -1,3 +1,3 @@
-# Laravel a point of sale 
+# point of sale 
 
-Create Laravel a point of sale project
+A point of sale - Course Laravel Project
