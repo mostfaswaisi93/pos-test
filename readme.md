@@ -1,3 +1,1 @@
-# point of sale 
-
-A point of sale - Course Laravel Project
+## Laravel - A Point Of Sale Course
