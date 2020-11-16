@@ -31,6 +31,9 @@
                         <div class="col-sm-6">
                             <h1>@yield('content-header')</h1>
                         </div>
+                        <div class="col-sm-6 text-right">
+                            @yield('content-actions')
+                        </div><!-- /.col -->
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
