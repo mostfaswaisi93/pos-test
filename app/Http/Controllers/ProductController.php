@@ -35,6 +35,7 @@ class ProductController extends Controller
             'image' => $image_path,
             'barcode' => $request->barcode,
             'price' => $request->price,
+            'quantity' => $request->quantity,
             'status' => $request->status
         ]);
 
@@ -55,6 +56,7 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->barcode = $request->barcode;
         $product->price = $request->price;
+        $product->quantity = $request->quantity;
         $product->status = $request->status;
 
         if ($request->hasFile('image')) {
@@ -72,5 +74,17 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Sorry, there\'re a problem while updating product.');
         }
         return redirect()->route('products.index')->with('success', 'Success, your product have been updated.');
+    }
+
+    public function destroy(Product $product)
+    {
+        if ($product->image) {
+            Storage::delete($product->image);
+        }
+        $product->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }
