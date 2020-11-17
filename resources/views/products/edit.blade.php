@@ -23,7 +23,6 @@
                 @enderror
             </div>
 
-
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea name="description" class="form-control @error('description') is-invalid @enderror"
@@ -65,6 +64,17 @@
                 <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
                     placeholder="price" value="{{ old('price', $product->price) }}">
                 @error('price')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="text" name="quantity" class="form-control @error('quantity') is-invalid @enderror"
+                    id="quantity" placeholder="Quantity" value="{{ old('quantity', $product->quantity) }}">
+                @error('quantity')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
