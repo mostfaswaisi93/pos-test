@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -9,20 +12,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/settings', 'SettingController@index')->name('settings.index');
-    Route::post('/settings', 'SettingController@store')->name('settings.store');
-    Route::resource('products', 'ProductController');
-    Route::resource('customers', 'CustomerController');
-    Route::resource('orders', 'OrderController');
-
-    Route::get('/cart', 'CartController@index')->name('cart.index');
-    Route::post('/cart', 'CartController@store')->name('cart.store');
-    Route::post('/cart/change-qty', 'CartController@changeQty');
-    Route::delete('/cart/delete', 'CartController@delete');
-    Route::delete('/cart/empty', 'CartController@empty');
+Route::prefix('admin')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::resource('products', ProductController::class);
 });
