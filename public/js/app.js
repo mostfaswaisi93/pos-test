@@ -69118,11 +69118,18 @@ var Cart = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
     _this.state = {
       cart: [],
-      barcode: ''
+      products: [],
+      barcode: '',
+      search: ''
     };
     _this.loadCart = _this.loadCart.bind(_assertThisInitialized(_this));
     _this.handleOnChangeBarcode = _this.handleOnChangeBarcode.bind(_assertThisInitialized(_this));
     _this.handleScanBarcode = _this.handleScanBarcode.bind(_assertThisInitialized(_this));
+    _this.handleChangeQty = _this.handleChangeQty.bind(_assertThisInitialized(_this));
+    _this.handleEmptyCart = _this.handleEmptyCart.bind(_assertThisInitialized(_this));
+    _this.loadProducts = _this.loadProducts.bind(_assertThisInitialized(_this));
+    _this.handleChangeSearch = _this.handleChangeSearch.bind(_assertThisInitialized(_this));
+    _this.handleSeach = _this.handleSeach.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -69131,6 +69138,22 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       // load user cart
       this.loadCart();
+      this.loadProducts();
+    }
+  }, {
+    key: "loadProducts",
+    value: function loadProducts() {
+      var _this2 = this;
+
+      var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var query = !!search ? "?search=".concat(search) : '';
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/admin/products".concat(query)).then(function (res) {
+        var products = res.data.data;
+
+        _this2.setState({
+          products: products
+        });
+      });
     }
   }, {
     key: "handleOnChangeBarcode",
@@ -69144,12 +69167,12 @@ var Cart = /*#__PURE__*/function (_Component) {
   }, {
     key: "loadCart",
     value: function loadCart() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/admin/cart').then(function (res) {
         var cart = res.data;
 
-        _this2.setState({
+        _this3.setState({
           cart: cart
         });
       });
@@ -69157,7 +69180,7 @@ var Cart = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleScanBarcode",
     value: function handleScanBarcode(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       event.preventDefault();
       var barcode = this.state.barcode;
@@ -69166,9 +69189,9 @@ var Cart = /*#__PURE__*/function (_Component) {
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/admin/cart', {
           barcode: barcode
         }).then(function (res) {
-          _this3.loadCart();
+          _this4.loadCart();
 
-          _this3.setState({
+          _this4.setState({
             barcode: ''
           });
         })["catch"](function (err) {
@@ -69178,7 +69201,23 @@ var Cart = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "handleChangeQty",
-    value: function handleChangeQty(event) {//
+    value: function handleChangeQty(product_id, qty) {
+      var cart = this.state.cart.map(function (c) {
+        if (c.id === product_id) {
+          c.pivot.quantity = qty;
+        }
+
+        return c;
+      });
+      this.setState({
+        cart: cart
+      });
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/admin/cart/change-qty', {
+        product_id: product_id,
+        quantity: qty
+      }).then(function (res) {})["catch"](function (err) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire('Error!', err.response.data.message, 'error');
+      });
     }
   }, {
     key: "getTotal",
@@ -69189,12 +69228,76 @@ var Cart = /*#__PURE__*/function (_Component) {
       return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(total).toFixed(2);
     }
   }, {
+    key: "handleClickDelete",
+    value: function handleClickDelete(product_id) {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/admin/cart/delete', {
+        product_id: product_id,
+        _method: 'DELETE'
+      }).then(function (res) {
+        var cart = _this5.state.cart.filter(function (c) {
+          return c.id !== product_id;
+        });
+
+        _this5.setState({
+          cart: cart
+        });
+      });
+    }
+  }, {
+    key: "handleEmptyCart",
+    value: function handleEmptyCart() {
+      var _this6 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/admin/cart/empty', {
+        _method: 'DELETE'
+      }).then(function (res) {
+        _this6.setState({
+          cart: []
+        });
+      });
+    }
+  }, {
+    key: "handleChangeSearch",
+    value: function handleChangeSearch(event) {
+      var search = event.target.value;
+      this.setState({
+        search: search
+      });
+    }
+  }, {
+    key: "handleSeach",
+    value: function handleSeach(event) {
+      if (event.keyCode === 13) {
+        this.loadProducts(event.target.value);
+      }
+    }
+  }, {
+    key: "addProductToCart",
+    value: function addProductToCart(barcode) {
+      var _this7 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/admin/cart', {
+        barcode: barcode
+      }).then(function (res) {
+        _this7.loadCart();
+
+        _this7.setState({
+          barcode: ''
+        });
+      })["catch"](function (err) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire('Error!', err.response.data.message, 'error');
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this8 = this;
 
       var _this$state = this.state,
           cart = _this$state.cart,
+          products = _this$state.products,
           barcode = _this$state.barcode;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
@@ -69235,9 +69338,14 @@ var Cart = /*#__PURE__*/function (_Component) {
           type: "text",
           className: "form-control form-control-sm qty",
           value: c.pivot.quantity,
-          onChange: _this4.handleChangeQty
+          onChange: function onChange(event) {
+            return _this8.handleChangeQty(c.id, event.target.value);
+          }
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          className: "btn btn-danger btn-sm"
+          className: "btn btn-danger btn-sm",
+          onClick: function onClick() {
+            return _this8.handleClickDelete(c.id);
+          }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-trash"
         }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
@@ -69255,7 +69363,8 @@ var Cart = /*#__PURE__*/function (_Component) {
         className: "col"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
-        className: "btn btn-danger btn-block"
+        className: "btn btn-danger btn-block",
+        onClick: this.handleEmptyCart
       }, "Cancel")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -69268,20 +69377,23 @@ var Cart = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: "form-control",
-        placeholder: "Search Product..."
+        placeholder: "Search Product...",
+        onChange: this.handleChangeSearch,
+        onKeyDown: this.handleSeach
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "order-product"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "item"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: "http://localhost:8000/storage/products/u00TnlJsFeTuq8ZHJty8vbwpgONrImTn0dUihduu.jpeg",
-        alt: ""
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Coca")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "item"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: "http://localhost:8000/storage/products/u00TnlJsFeTuq8ZHJty8vbwpgONrImTn0dUihduu.jpeg",
-        alt: ""
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Coca")))));
+      }, products.map(function (p) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: function onClick() {
+            return _this8.addProductToCart(p.barcode);
+          },
+          key: p.id,
+          className: "item"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: p.image_url,
+          alt: ""
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, p.name));
+      }))));
     }
   }]);
 

@@ -10,17 +10,34 @@ class Cart extends Component {
         super(props)
         this.state = {
             cart: [],
+            products: [],
             barcode: '',
+            search: '',
         };
 
         this.loadCart = this.loadCart.bind(this);
         this.handleOnChangeBarcode = this.handleOnChangeBarcode.bind(this)
         this.handleScanBarcode = this.handleScanBarcode.bind(this)
+        this.handleChangeQty = this.handleChangeQty.bind(this)
+        this.handleEmptyCart = this.handleEmptyCart.bind(this)
+
+        this.loadProducts = this.loadProducts.bind(this)
+        this.handleChangeSearch = this.handleChangeSearch.bind(this)
+        this.handleSeach = this.handleSeach.bind(this)
     }
 
     componentDidMount() {
         // load user cart
         this.loadCart();
+        this.loadProducts();
+    }
+
+    loadProducts(search = '') {
+        const query = !!search ? `?search=${search}` : '';
+        axios.get(`/admin/products${query}`).then(res => {
+            const products = res.data.data;
+            this.setState({products});
+        })
     }
 
     handleOnChangeBarcode(event) {
@@ -52,17 +69,65 @@ class Cart extends Component {
             })
         }
     }
-    handleChangeQty (event) {
-        //
+    handleChangeQty (product_id, qty) {
+        const cart = this.state.cart.map(c => {
+            if (c.id === product_id) {
+                c.pivot.quantity = qty;
+            }
+            return c;
+        });
+
+        this.setState({cart})
+
+        axios.post('/admin/cart/change-qty', {product_id, quantity: qty}).then(res => {
+
+        }).catch(err => {
+            Swal.fire(
+                'Error!',
+                err.response.data.message,
+                'error'
+            )
+        })
     }
 
     getTotal(cart) {
         const total = cart.map(c => c.pivot.quantity * c.price);
         return sum(total).toFixed(2);
     }
-
+    handleClickDelete(product_id) {
+        axios.post('/admin/cart/delete', {product_id, _method: 'DELETE'}).then(res => {
+            const cart = this.state.cart.filter(c => c.id !== product_id);
+            this.setState({cart});
+        })
+    }
+    handleEmptyCart () {
+        axios.post('/admin/cart/empty', { _method: 'DELETE'}).then(res => {
+            this.setState({cart: []});
+        })
+    }
+    handleChangeSearch(event) {
+        const search = event.target.value;
+        this.setState({search})
+    }
+    handleSeach(event) {
+        if (event.keyCode === 13) {
+            this.loadProducts(event.target.value)
+        }
+    }
+    addProductToCart(barcode) {
+        axios.post('/admin/cart', {barcode}).then(res => {
+            this.loadCart();
+            this.setState({barcode: ''})
+        }).catch(err => {
+            Swal.fire(
+                'Error!',
+                err.response.data.message,
+                'error'
+            )
+        })
+    }
     render() {
-        const {cart, barcode} = this.state;
+        const {cart, products, barcode} = this.state;
         return (
             <div className="row">
                 <div className="col-md-6 col-lg-4">
@@ -99,8 +164,15 @@ class Cart extends Component {
                                     <tr key={c.id}>
                                         <td>{c.name}</td>
                                         <td>
-                                            <input type="text" className="form-control form-control-sm qty" value={c.pivot.quantity} onChange={this.handleChangeQty} />
-                                            <button className="btn btn-danger btn-sm">
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm qty"
+                                                value={c.pivot.quantity}
+                                                onChange={event => this.handleChangeQty(c.id, event.target.value)}/>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => this.handleClickDelete(c.id)}
+                                            >
                                                 <i className="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -118,7 +190,11 @@ class Cart extends Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <button type="button" className="btn btn-danger btn-block">Cancel</button>
+                            <button
+                                type="button"
+                                className="btn btn-danger btn-block"
+                                onClick={this.handleEmptyCart}
+                            >Cancel</button>
                         </div>
                         <div className="col">
                             <button type="button" className="btn btn-primary btn-block">Submit</button>
@@ -127,21 +203,23 @@ class Cart extends Component {
                 </div>
                 <div className="col-md-6 col-lg-8">
                     <div className="mb-2">
-                        <input type="text" className="form-control" placeholder="Search Product..."/>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search Product..."
+                            onChange={this.handleChangeSearch}
+                            onKeyDown={this.handleSeach}
+                        />
                     </div>
                     <div className="order-product">
-                        <div className="item">
-                            <img
-                                src="http://localhost:8000/storage/products/u00TnlJsFeTuq8ZHJty8vbwpgONrImTn0dUihduu.jpeg"
-                                alt=""/>
-                            <h5>Coca</h5>
-                        </div>
-                        <div className="item">
-                            <img
-                                src="http://localhost:8000/storage/products/u00TnlJsFeTuq8ZHJty8vbwpgONrImTn0dUihduu.jpeg"
-                                alt=""/>
-                            <h5>Coca</h5>
-                        </div>
+                        {products.map(p => (
+                            <div onClick={() => this.addProductToCart(p.barcode)} key={p.id} className="item">
+                                <img
+                                    src={p.image_url}
+                                    alt=""/>
+                                <h5>{p.name}</h5>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
