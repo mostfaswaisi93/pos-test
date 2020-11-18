@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerStoreRequest;
 use App\Models\Customer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,6 +12,11 @@ class CustomerController extends Controller
 {
     public function index()
     {
+        if (request()->wantsJson()) {
+            return response(
+                Customer::all()
+            );
+        }
         $customers = Customer::latest()->paginate(10);
         return view('customers.index')->with('customers', $customers);
     }

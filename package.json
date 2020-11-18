@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
-        "admin-lte": "^3.0.5"
+        "admin-lte": "^3.0.5",
+        "sweetalert2": "^10.10.1"
     }
 }
